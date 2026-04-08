@@ -564,7 +564,64 @@ nav.scrolled {
   font-weight: 500;
   letter-spacing: 0.5px;
 }
+/* -- PROFILE & TRIP PLANNER STYLING -- */
+.profile-container {
+  max-width: 800px;
+  margin: 100px auto 40px;
+  padding: 40px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+}
 
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--sand);
+  padding-bottom: 30px;
+}
+
+.profile-pic-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--rose-pale);
+  object-fit: cover;
+}
+
+.planner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.trip-card {
+  background: var(--cream);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--sand-dark);
+  transition: transform 0.2s;
+}
+
+.trip-card:hover { transform: translateY(-5px); }
+
+.trip-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.trip-details { padding: 20px; }
+.trip-status {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--rose);
+  font-weight: 600;
+}
 /* ── ABOUT ── */
 #about { padding-top: 80px; background: var(--cream); }
 
@@ -1952,6 +2009,8 @@ nav.scrolled {
   <a class="mobile-find-travel" id="mobileFindTravel" onclick="showPage('partner'); closeMobileMenu()">Find Travel ✈️</a>
   <a onclick="showPage('chat'); closeMobileMenu()">💬 Messages</a>
 <a onclick="showPage('wallet'); closeMobileMenu()">💳 Wallet</a>
+<a onclick="showPage('planner'); closeMobileMenu()">🗓️ Trip Planner</a>
+<a onclick="showPage('profile'); closeMobileMenu()">👤 My Profile</a>
   <a onclick="showPage('contact'); closeMobileMenu()">Contact</a>
   <a id="mobileLoginLink" onclick="openLogin(); closeMobileMenu()" style="color:var(--rose); border-bottom:none; margin-top:12px;">Login</a>
   <a id="mobileLogoutLink" onclick="logoutUser(); closeMobileMenu()" style="display:none; color:#c0392b; border-bottom:none; margin-top:12px;">🚪 Logout</a>
@@ -1967,6 +2026,8 @@ nav.scrolled {
     <a onclick="showPage('partner')" id="nav-partner" class="nav-find-travel">Find Travel ✈️</a>
 <a onclick="showPage('wallet')" id="nav-wallet" class="nav-find-travel">Wallet 💳</a>
 <a onclick="showPage('chat')" id="nav-chat" class="nav-find-travel">Chat 💬</a>
+<a onclick="showPage('planner')" id="nav-planner"  class="nav-find-travel">Trip Planner 🗓️</a>
+<a onclick="showPage('profile')" id="nav-profile"  class="nav-find-travel">My Profile 👤</a>
     <a onclick="showPage('contact')" id="nav-contact">Contact</a>
   </div>
   <div class="nav-right" id="navRight">
@@ -2751,6 +2812,61 @@ nav.scrolled {
   </div>
 </div>
 <!-- end #contact -->
+ <div id="profile" class="page">
+  <div class="profile-container">
+    <div class="profile-header">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200" class="profile-pic-large" alt="Profile">
+      <div>
+        <h2 class="form-title" id="profileName">Sara Mitchell</h2>
+        <p class="modal-sub">Verified Member Since 2023 • 📍 New York, USA</p>
+        <button class="nav-right .btn-login" style="padding: 5px 15px; font-size: 12px;">Edit Profile</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Bio</label>
+      <p style="color: var(--muted); font-weight: 300;">Solo traveler, mountain lover, and coffee enthusiast. I've been to 12 countries and looking for my next adventure in Europe!</p>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Travel Style</label>
+        <span class="dest-tag" style="background: var(--rose-pale); color: var(--rose);">🏔 Adventure</span>
+        <span class="dest-tag" style="background: var(--rose-pale); color: var(--rose);">☕ Cafe Hopping</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="planner" class="page">
+  <div class="section-wrap">
+    <div class="destinations-header">
+      <div>
+        <div class="section-label">Your Journeys</div>
+        <h2 class="section-title">My Trip <em>Planner</em></h2>
+      </div>
+      <button class="btn-primary">+ Create New Trip</button>
+    </div>
+    
+    <div class="planner-grid">
+      <div class="trip-card">
+        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=400" class="trip-img" alt="Greece">
+        <div class="trip-details">
+          <div class="trip-status">Upcoming • June 2026</div>
+          <h3 class="dest-name" style="color: var(--charcoal);">Santorini Getaway</h3>
+          <p class="match-info">2 Partners Joined • 4 Activities Saved</p>
+        </div>
+      </div>
+      
+      <div class="trip-card">
+        <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400" class="trip-img" alt="Tokyo">
+        <div class="trip-details">
+          <div class="trip-status" style="color: var(--muted);">Draft</div>
+          <h3 class="dest-name" style="color: var(--charcoal);">Tokyo Food Tour</h3>
+          <p class="match-info">Looking for partners...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="chat" class="page">
   <div class="app-page-container">
     <div class="app-header">
