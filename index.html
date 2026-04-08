@@ -847,7 +847,73 @@ nav.scrolled {
   line-height: 1.7;
   font-weight: 300;
 }
+/* -- CHAT & WALLET NAV ICONS -- */
+.nav-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+.nav-icon:hover { color: var(--rose); }
 
+/* -- APP PAGES STYLING -- */
+.app-page-container {
+  max-width: 600px;
+  margin: 100px auto 40px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  overflow: hidden;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  padding: 24px;
+  background: var(--rose-pale);
+  border-bottom: 1px solid var(--rose-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Chat Layout */
+.chat-list { padding: 10px; flex: 1; }
+.chat-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border-bottom: 1px solid var(--sand);
+  cursor: pointer;
+}
+.chat-item:hover { background: var(--sand); }
+.chat-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+.chat-info { flex: 1; }
+.chat-name { font-weight: 600; color: var(--charcoal); margin-bottom: 4px; }
+.chat-last-msg { font-size: 13px; color: var(--muted); }
+
+/* Wallet Layout */
+.wallet-card {
+  margin: 20px;
+  padding: 30px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 10px 20px rgba(110,31,58,0.2);
+}
+.balance-label { font-size: 14px; opacity: 0.8; margin-bottom: 10px; }
+.balance-amount { font-size: 32px; font-weight: 600; }
+.transaction-list { padding: 20px; }
+.trans-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--sand);
+}
 /* ── SAFETY SECTION ── */
 .safety-section { background: var(--rose-dark); }
 
@@ -1850,6 +1916,27 @@ nav.scrolled {
   .pillars { grid-template-columns: 1fr; }
   .hero-actions { flex-direction: column; align-items: center; }
 }
+
+/* -- MESSAGE BUBBLES -- */
+.msg-bubble {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.msg-sent {
+  align-self: flex-end;
+  background: var(--rose);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.msg-received {
+  align-self: flex-start;
+  background: var(--sand-dark);
+  color: var(--charcoal);
+  border-bottom-left-radius: 4px;
+}
 </style>
 </head>
 <body>
@@ -1863,6 +1950,8 @@ nav.scrolled {
   <a onclick="showPage('about'); closeMobileMenu()">About</a>
   <a onclick="showPage('how'); closeMobileMenu()">How It Works</a>
   <a class="mobile-find-travel" id="mobileFindTravel" onclick="showPage('partner'); closeMobileMenu()">Find Travel ✈️</a>
+  <a onclick="showPage('chat'); closeMobileMenu()">💬 Messages</a>
+<a onclick="showPage('wallet'); closeMobileMenu()">💳 Wallet</a>
   <a onclick="showPage('contact'); closeMobileMenu()">Contact</a>
   <a id="mobileLoginLink" onclick="openLogin(); closeMobileMenu()" style="color:var(--rose); border-bottom:none; margin-top:12px;">Login</a>
   <a id="mobileLogoutLink" onclick="logoutUser(); closeMobileMenu()" style="display:none; color:#c0392b; border-bottom:none; margin-top:12px;">🚪 Logout</a>
@@ -1876,6 +1965,8 @@ nav.scrolled {
     <a onclick="showPage('about')" id="nav-about">About</a>
     <a onclick="showPage('how')" id="nav-how">How It Works</a>
     <a onclick="showPage('partner')" id="nav-partner" class="nav-find-travel">Find Travel ✈️</a>
+<a onclick="showPage('wallet')" id="nav-wallet" class="nav-find-travel">Wallet 💳</a>
+<a onclick="showPage('chat')" id="nav-chat" class="nav-find-travel">Chat 💬</a>
     <a onclick="showPage('contact')" id="nav-contact">Contact</a>
   </div>
   <div class="nav-right" id="navRight">
@@ -1883,11 +1974,12 @@ nav.scrolled {
     <button class="btn-signup" id="navSignupBtn" onclick="openSignup()">Join Free →</button>
     <!-- shown after login -->
     <div class="user-avatar-wrap" id="userAvatarWrap" onclick="toggleUserDropdown()">
+        
       <div class="user-avatar" id="userAvatarInitial">?</div>
       <span class="user-name-label" id="userNameLabel"></span>
-      <div class="user-dropdown" id="userDropdown">
-        <div class="user-dropdown-item" onclick="event.stopPropagation(); showPage('partner'); closeUserDropdown()">✈️ Find Travel</div>
-        <div class="user-dropdown-item" onclick="event.stopPropagation(); showPage('home'); closeUserDropdown()">🏠 Home</div>
+      <div class="user-dropdown" id="userDropdown"></div>
+    
+ 
         <div class="dropdown-divider"></div>
         <div class="user-dropdown-item logout" onclick="event.stopPropagation(); logoutUser()">🚪 Logout</div>
       </div>
@@ -2659,6 +2751,63 @@ nav.scrolled {
   </div>
 </div>
 <!-- end #contact -->
+<div id="chat" class="page">
+  <div class="app-page-container">
+    <div class="app-header">
+      <h2 class="form-title" style="margin:0; font-size:24px;">Chat</h2>
+      <button class="nav-icon" style="border:none; background:none;" onclick="showChatList()">👥</button>
+    </div>
+    
+    <div id="chatListView">
+      <div class="chat-list">
+        <div class="chat-item" onclick="openConversation('Sara Mitchell', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100')">
+          <img class="chat-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Sara">
+          <div class="chat-info">
+            <div class="chat-name">Sara Mitchell</div>
+            <div class="chat-last-msg" id="lastMsg-Sara">Are we still meeting in Santorini?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="messageView" style="display:none; flex:1; flex-direction:column;">
+      <div class="active-chat-user" style="padding:10px 20px; background:var(--sand); border-bottom:1px solid var(--rose-light); font-weight:600;">
+        <span onclick="showChatList()" style="cursor:pointer; margin-right:10px;">←</span>
+        <span id="activeUserName">Sara Mitchell</span>
+      </div>
+      <div id="messageHistory" style="flex:1; padding:20px; overflow-y:auto; background:#fdfdfd; display:flex; flex-direction:column; gap:10px;">
+        </div>
+      <div class="chat-input-area" style="padding:15px; border-top:1px solid var(--sand); display:flex; gap:10px;">
+        <input type="text" id="chatInput" placeholder="Type a message..." style="flex:1; padding:12px; border-radius:20px; border:1.5px solid var(--sand-dark);">
+        <button class="form-btn" style="width:auto; margin:0; padding:10px 20px;" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="wallet" class="page">
+  <div class="app-page-container">
+    <div class="app-header">
+      <h2 class="form-title" style="margin:0; font-size:24px;">My Wallet</h2>
+      <span>💳</span>
+    </div>
+    <div class="wallet-card">
+      <div class="balance-label">Total Balance</div>
+      <div class="balance-amount">$1,250.00</div>
+    </div>
+    <div class="transaction-list">
+      <div class="recent-title">Recent Activity</div>
+      <div class="trans-item">
+        <span>Booking: Paris Hotel</span>
+        <span style="color:#c0392b;">-$450.00</span>
+      </div>
+      <div class="trans-item">
+        <span>Split payment: Goa Trip</span>
+        <span style="color:var(--success);">+$120.00</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── LOGIN MODAL ── -->
 <div id="loginModal" class="modal-overlay">
@@ -3017,6 +3166,64 @@ function sendContact(btn) {
     btn.disabled = false;
   }, 1800);
 }
+/* -- CHAT FUNCTIONALITY -- */
+let currentPartner = "";
+
+function showChatList() {
+  document.getElementById('chatListView').style.display = 'block';
+  document.getElementById('messageView').style.display = 'none';
+}
+
+function openConversation(name, img) {
+  currentPartner = name;
+  document.getElementById('activeUserName').innerText = name;
+  document.getElementById('chatListView').style.display = 'none';
+  document.getElementById('messageView').style.display = 'flex';
+  
+  // Clear history and add a sample received message
+  const history = document.getElementById('messageHistory');
+  history.innerHTML = `
+    <div class="msg-bubble msg-received">Hi! I'm so excited about our trip. Are we still meeting in Santorini?</div>
+  `;
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msgText = input.value.trim();
+  
+  if (msgText === "") return;
+
+  const history = document.getElementById('messageHistory');
+  
+  // Add user's message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg-bubble msg-sent';
+  userMsg.innerText = msgText;
+  history.appendChild(userMsg);
+  
+  // Update last message in the list
+  document.getElementById('lastMsg-Sara').innerText = "You: " + msgText;
+  
+  // Clear input and scroll to bottom
+  input.value = "";
+  history.scrollTop = history.scrollHeight;
+
+  // Simulate a response after 1.5 seconds
+  setTimeout(() => {
+    const reply = document.createElement('div');
+    reply.className = 'msg-bubble msg-received';
+    reply.innerText = "That sounds perfect! Let's book the tickets tonight. ✈️";
+    history.appendChild(reply);
+    history.scrollTop = history.scrollHeight;
+  }, 1500);
+}
+
+// Allow pressing "Enter" to send
+document.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter' && document.getElementById('chatInput') === document.activeElement) {
+    sendMessage();
+  }
+});
 </script>
 
 </body>
