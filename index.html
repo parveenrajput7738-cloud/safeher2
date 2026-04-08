@@ -1974,14 +1974,14 @@ nav.scrolled {
     <button class="btn-signup" id="navSignupBtn" onclick="openSignup()">Join Free →</button>
     <!-- shown after login -->
     <div class="user-avatar-wrap" id="userAvatarWrap" onclick="toggleUserDropdown()">
-        
+                <div class="user-dropdown-item logout" onclick="event.stopPropagation(); logoutUser()">🚪 Logout</div>
       <div class="user-avatar" id="userAvatarInitial">?</div>
       <span class="user-name-label" id="userNameLabel"></span>
       <div class="user-dropdown" id="userDropdown"></div>
     
  
         <div class="dropdown-divider"></div>
-        <div class="user-dropdown-item logout" onclick="event.stopPropagation(); logoutUser()">🚪 Logout</div>
+        
       </div>
     </div>
   </div>
